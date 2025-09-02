@@ -32,9 +32,14 @@ export default function AuthForm({ type = "login", onSubmit }) {
 
   const schema = createSchema(type);
 
-  const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
     resolver: zodResolver(schema),
-    mode: "onChange"
+    mode: "onChange",
   });
 
   const submitHandler = async (data) => {
@@ -43,7 +48,11 @@ export default function AuthForm({ type = "login", onSubmit }) {
 
     setTimeout(() => {
       setIsSubmitting(false);
-      setSuccessMessage(type === "login" ? "Login successful ✅" : "Account created successfully ✅");
+      setSuccessMessage(
+        type === "login"
+          ? "Login successful ✅"
+          : "Account created successfully ✅"
+      );
       reset();
       if (onSubmit) onSubmit(data);
     }, 1000);
@@ -62,40 +71,62 @@ export default function AuthForm({ type = "login", onSubmit }) {
   const fields = [
     { name: "email", label: "Email", type: "email" },
     { name: "password", label: "Password", type: "password" },
-    ...(type === "register" ? [{ name: "confirmPassword", label: "Confirm Password", type: "password" }] : [])
+    ...(type === "register"
+      ? [
+          {
+            name: "confirmPassword",
+            label: "Confirm Password",
+            type: "password",
+          },
+        ]
+      : []),
   ];
 
   return (
-    <div className="auth-container">
-      <h2>{type === "login" ? "Login" : "Create Account"}</h2>
-      <form onSubmit={handleSubmit(submitHandler)} className="auth-form">
-        {fields.map((field) => (
-          <div className="form-group" key={field.name}>
-            <label>{field.label}</label>
-            <input type={field.type} {...register(field.name)} placeholder={field.label} />
-            {errors[field.name] && <p className="error">{errors[field.name]?.message}</p>}
-          </div>
-        ))}
+    <section className="auth-section">
+      <div className="auth-container">
+        <h2>{type === "login" ? "Login" : "Create Account"}</h2>
+        <form onSubmit={handleSubmit(submitHandler)} className="auth-form">
+          {fields.map((field) => (
+            <div className="form-group" key={field.name}>
+              <label>{field.label}</label>
+              <input
+                type={field.type}
+                {...register(field.name)}
+                placeholder={field.label}
+              />
+              {errors[field.name] && (
+                <p className="error">{errors[field.name]?.message}</p>
+              )}
+            </div>
+          ))}
 
-        <button type="submit" disabled={!isValid || isSubmitting}>
-          {isSubmitting ? (type === "login" ? "Logging in..." : "Registering...") : (type === "login" ? "Login" : "Register")}
-        </button>
-
-        {/* Google button only for login */}
-        {type === "login" && (
-          <button
-            type="button"
-            className="google-btn"
-            onClick={handleGoogleLogin}
-            disabled={googleLoading}
-          >
-            <img src={googleIcon} alt="google-icon" className="google-icon" />
-            {googleLoading ? "Signing in..." : "Continue with Google"}
+          <button type="submit" disabled={!isValid || isSubmitting}>
+            {isSubmitting
+              ? type === "login"
+                ? "Logging in..."
+                : "Registering..."
+              : type === "login"
+              ? "Login"
+              : "Register"}
           </button>
-        )}
-      </form>
 
-      {successMessage && <p className="success">{successMessage}</p>}
-    </div>
+          {/* Google button only for login */}
+          {type === "login" && (
+            <button
+              type="button"
+              className="google-btn"
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+            >
+              <img src={googleIcon} alt="google-icon" className="google-icon" />
+              {googleLoading ? "Signing in..." : "Continue with Google"}
+            </button>
+          )}
+        </form>
+
+        {successMessage && <p className="success">{successMessage}</p>}
+      </div>
+    </section>
   );
 }
