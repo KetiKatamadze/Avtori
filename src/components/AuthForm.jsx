@@ -111,6 +111,10 @@ export default function AuthForm({ type = "login", onSubmit }) {
               : "Register"}
           </button>
 
+          {type === "login" && (
+  <p className="forgot-password">Forgot Password?</p>
+)}
+
           {/* Google button only for login */}
           {type === "login" && (
             <button

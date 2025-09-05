@@ -8,6 +8,7 @@ import FAQ from "./components/ContentPages/Faq";
 import Terms from "./components/ContentPages/Terms";
 import Products from "./components/ContentPages/Products";
 import Cart from "./components/ContentPages/Cart";
+import CheckoutPage from "./components/ContentPages/ChcekoutPage";
 import { CartProvider } from "./context/CartContext"; 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/products" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
       </Router>
     </CartProvider>
